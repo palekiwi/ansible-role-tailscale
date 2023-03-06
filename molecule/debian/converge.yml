@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    # replace these tasks with whatever you find suitable to test
+    - name: "Include palekiwi.tailscale"
+      ansible.builtin.include_role:
+        name: "palekiwi.tailscale"

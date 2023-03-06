@@ -3,12 +3,8 @@
 - name: Import tasks to setup repository.
   ansible.builtin.include_tasks: "repo_{{ ansible_facts['distribution'] }}.yml"
 
-- name: Print distro
-  ansible.builtin.debug:
-    var: ansible_facts['distribution']
-
 - name: Ensure tailscale is installed.
-  ansible.builtin.dnf:
+  ansible.builtin.package:
     name: tailscale
     state: present
   become: true
