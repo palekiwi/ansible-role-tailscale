@@ -1,0 +1,47 @@
+---
+# tasks file for tailscale
+- name: Download tailscale GPG key
+  ansible.builtin.get_url:
+    url: https://pkgs.tailscale.com/stable/centos/9/repo.gpg
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-9
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
+- name: Enable tailscale repository.
+  ansible.builtin.yum_repository:
+    name: tailscale
+    description: Tailscale Stable for CentOS Stream 9
+    baseurl: https://pkgs.tailscale.com/stable/centos/9/$basearch
+    enabled: true
+    repo_gpgcheck: true
+    gpgcheck: false
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-9
+  become: true
+
+- name: Ensure tailscale is installed.
+  ansible.builtin.dnf:
+    name: tailscale
+    state: present
+  become: true
+
+- name: Ensure tailscaled service is started.
+  ansible.builtin.service:
+    name: tailscaled.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Ensure machine is connected to tailscale network.
+  block:
+    - name: Check if machine already has an IP assigned.
+      ansible.builtin.command:
+        cmd: "tailscale ip"
+      changed_when: false
+  rescue:
+    - name: Connect machine to tailscale network
+      ansible.builtin.command:
+        cmd: "tailscale up --auth-key {{ auth_key }}"
+      become: true
+      changed_when: true
