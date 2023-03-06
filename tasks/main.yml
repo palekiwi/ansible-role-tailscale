@@ -1,24 +1,11 @@
 ---
 # tasks file for tailscale
-- name: Download tailscale GPG key
-  ansible.builtin.get_url:
-    url: https://pkgs.tailscale.com/stable/centos/9/repo.gpg
-    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-9
-    mode: "0644"
-    owner: root
-    group: root
-  become: true
+- name: Import tasks to setup repository.
+  ansible.builtin.include_tasks: "repo_{{ ansible_facts['distribution'] }}.yml"
 
-- name: Enable tailscale repository.
-  ansible.builtin.yum_repository:
-    name: tailscale
-    description: Tailscale Stable for CentOS Stream 9
-    baseurl: https://pkgs.tailscale.com/stable/centos/9/$basearch
-    enabled: true
-    repo_gpgcheck: true
-    gpgcheck: false
-    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-9
-  become: true
+- name: Print distro
+  ansible.builtin.debug:
+    var: ansible_facts['distribution']
 
 - name: Ensure tailscale is installed.
   ansible.builtin.dnf:

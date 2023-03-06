@@ -1,0 +1,26 @@
+---
+- name: Download tailscale GPG key
+  ansible.builtin.get_url:
+    url: https://pkgs.tailscale.com/stable/centos/{{ ansible_facts['distribution_major_version'] }}/repo.gpg
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-{{ ansible_facts['distribution_major_version'] }}
+    mode: "0644"
+    owner: root
+    group: root
+  become: true
+
+- name: Import Tailscale GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-{{ ansible_facts['distribution_major_version'] }}
+  become: true
+
+- name: Enable tailscale repository.
+  ansible.builtin.yum_repository:
+    name: tailscale
+    description: Tailscale Stable for CentOS Stream {{ ansible_facts['distribution_major_version'] }}
+    baseurl: https://pkgs.tailscale.com/stable/centos/{{ ansible_facts['distribution_major_version'] }}/$basearch
+    enabled: true
+    repo_gpgcheck: true
+    gpgcheck: false
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-{{ ansible_facts['distribution_major_version'] }}
+  become: true
