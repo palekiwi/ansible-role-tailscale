@@ -28,3 +28,29 @@
         cmd: "tailscale up --auth-key {{ auth_key }}"
       become: true
       changed_when: true
+
+- name: Run exit node.
+  when: run_exit_node
+  notify: Advertise exit node.
+  block:
+    - name: Ensure ip forwarding is correctly configured.
+      when: run_exit_node
+      become: true
+      ansible.posix.sysctl:
+        sysctl_file: /etc/sysctl.d/99-tailscale.conf
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        sysctl_set: true
+        state: present
+        reload: true
+      loop:
+        - { name: 'net.ipv4.ip_forward', value: '1'}
+        - { name: 'net.ipv6.conf.all.forwarding', value: '1'}
+
+    - name: Allow masquerading in firewalld.
+      become: true
+      ansible.posix.firewalld:
+        masquerade: true
+        state: enabled
+        permanent: true
+      when: ansible_facts['os_family'] == 'RedHat'

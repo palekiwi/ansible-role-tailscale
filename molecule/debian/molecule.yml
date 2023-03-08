@@ -6,7 +6,7 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: debian
+  - name: debian11
     box: generic/debian11
     memory: 256
     cpus: 1

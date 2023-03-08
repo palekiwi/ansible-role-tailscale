@@ -1,2 +1,7 @@
 ---
 # handlers file for tailscale
+- name: Advertise exit node.
+  become: true
+  ansible.builtin.command:
+    cmd: "tailscale up --advertise-exit-node"
+  changed_when: true

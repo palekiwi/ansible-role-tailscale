@@ -6,7 +6,7 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: instance
+  - name: rocky9
     box: generic/rocky9
     memory: 256
     cpus: 1
