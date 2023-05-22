@@ -3,3 +3,4 @@
 auth_key: ""
 
 run_exit_node: false
+hostname: "{{ inventory_hostname }}"

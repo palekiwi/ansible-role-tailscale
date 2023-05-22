@@ -23,9 +23,9 @@
   failed_when: false
   register: tailnet_ip
 
-- name: Connect machine to tailscale network
+- name: Connect machine to tailscale network with hostname {{ hostname }}.
   ansible.builtin.command:
-    cmd: "tailscale up --auth-key {{ auth_key }}"
+    cmd: "tailscale up --auth-key {{ auth_key }} --hostname {{ inventory_hostname }}"
   become: true
   changed_when: true
   when: "'NeedsLogin' in tailnet_ip.stderr"
