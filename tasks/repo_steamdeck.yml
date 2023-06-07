@@ -1,0 +1,15 @@
+---
+- name: Check if system is in read-only mode.
+  become: true
+  ansible.builtin.command:
+    cmd: "steamos-readonly status"
+  changed_when: false
+  failed_when: false
+  register: out_readonly
+
+- name: Ensure readonly is disabled in Steam OS.
+  when: "out_readonly.stdout == 'enabled'"
+  become: true
+  ansible.builtin.command:
+    cmd: "steamos-readonly disable"
+  changed_when: true

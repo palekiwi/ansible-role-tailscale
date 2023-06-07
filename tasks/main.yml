@@ -1,7 +1,17 @@
 ---
 # tasks file for tailscale
 - name: Import tasks to setup repository.
+  ansible.builtin.include_tasks:
+    file: "{{ item }}"
+  with_first_found:
+    - files:
+        - "repo_{{ ansible_hostname }}.yml"
+        - "repo_{{ ansible_facts['distribution'] }}_{{ ansible_architecture }}.yml"
+      skip: false
+
+- name: Import tasks to setup repository.
   ansible.builtin.include_tasks: "repo_{{ ansible_facts['distribution'] }}_{{ ansible_architecture }}.yml"
+  when: false
 
 - name: Ensure tailscale is installed.
   ansible.builtin.package:
