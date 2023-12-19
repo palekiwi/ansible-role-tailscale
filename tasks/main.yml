@@ -52,7 +52,7 @@
   notify: Advertise exit node.
   block:
     - name: Ensure ip forwarding is correctly configured.
-      when: run_advertise_exit_node
+      when: tailscale_advertise_exit_node
       become: true
       ansible.posix.sysctl:
         sysctl_file: /etc/sysctl.d/99-tailscale.conf
