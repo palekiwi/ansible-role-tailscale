@@ -1,6 +1,11 @@
 ---
 - name: Converge
   hosts: all
+
+  vars_files:
+    - vars/key.yml
+    - vars/main.yml
+
   tasks:
     # replace these tasks with whatever you find suitable to test
     - name: "Include palekiwi.tailscale"

@@ -6,9 +6,9 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: rocky9
+  - name: tailscale-rocky9
     box: generic/rocky9
-    memory: 256
+    memory: 512
     cpus: 1
 provisioner:
   name: ansible

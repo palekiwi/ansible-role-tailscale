@@ -33,19 +33,26 @@
   failed_when: false
   register: tailnet_ip
 
-- name: Connect machine to tailscale network with hostname {{ hostname }}.
+- name: Connect machine to tailscale network with hostname {{ tailscale_hostname }}.
   ansible.builtin.command:
-    cmd: "tailscale up --auth-key {{ auth_key }} --hostname {{ inventory_hostname }}"
+    cmd: >
+      tailscale up
+      --auth-key={{ tailscale_auth_key }}
+      --hostname={{ tailscale_hostname }}
+      --accept-dns={{ tailscale_accept_dns }}
+      --advertise-exit-node={{ tailscale_advertise_exit_node }}
+      --advertise-tags='{{ tailscale_advertise_tags }}'
+      --exit-node='{{ tailscale_exit_node }}'
   become: true
   changed_when: true
   when: "'NeedsLogin' in tailnet_ip.stderr"
 
 - name: Run exit node.
-  when: run_exit_node
+  when: tailscale_exit_node
   notify: Advertise exit node.
   block:
     - name: Ensure ip forwarding is correctly configured.
-      when: run_exit_node
+      when: run_advertise_exit_node
       become: true
       ansible.posix.sysctl:
         sysctl_file: /etc/sysctl.d/99-tailscale.conf

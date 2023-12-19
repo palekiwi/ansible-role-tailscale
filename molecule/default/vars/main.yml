@@ -1,7 +1,6 @@
 ---
 tailscale_accept_dns: true
-tailscale_advertise_exit_node: false
-tailscale_advertise_tags: ""
-tailscale_auth_key: ""
+tailscale_advertise_exit_node: true
+tailscale_advertise_tags: "tag:molecule"
 tailscale_exit_node: ""
 tailscale_hostname: "{{ inventory_hostname }}"

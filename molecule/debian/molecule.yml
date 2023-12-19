@@ -6,7 +6,7 @@ driver:
   provider:
     name: libvirt
 platforms:
-  - name: debian11
+  - name: tailscale-debian11
     box: generic/debian11
     memory: 256
     cpus: 1
