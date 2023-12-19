@@ -48,7 +48,7 @@
   when: "'NeedsLogin' in tailnet_ip.stderr"
 
 - name: Run exit node.
-  when: tailscale_exit_node
+  when: tailscale_advertise_exit_node
   notify: Advertise exit node.
   block:
     - name: Ensure ip forwarding is correctly configured.
