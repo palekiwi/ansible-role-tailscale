@@ -1,12 +1,10 @@
 ---
 - name: Ensure additional required packages are installed.
-  become: true
   ansible.builtin.apt:
     name: apt-transport-https
     state: present
 
 - name: Ensure Tailscale repo is enabled.
-  become: true
   block:
     - name: Install GPG key into /usr/share/keyrings
       ansible.builtin.get_url:

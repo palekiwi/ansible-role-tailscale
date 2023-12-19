@@ -6,13 +6,11 @@
     mode: "0644"
     owner: root
     group: root
-  become: true
 
 - name: Import Tailscale GPG key
   ansible.builtin.rpm_key:
     state: present
     key: /etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-{{ ansible_facts['distribution_major_version'] }}
-  become: true
 
 - name: Enable tailscale repository.
   ansible.builtin.yum_repository:
@@ -23,4 +21,3 @@
     repo_gpgcheck: true
     gpgcheck: false
     gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Tailscale-CentOS-{{ ansible_facts['distribution_major_version'] }}
-  become: true

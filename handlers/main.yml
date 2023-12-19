@@ -1,7 +1,13 @@
 ---
-# handlers file for tailscale
-- name: Advertise exit node.
-  become: true
+- name: Log into tailscale
   ansible.builtin.command:
-    cmd: "tailscale up --advertise-exit-node"
+    cmd: >
+      tailscale up
+      --auth-key={{ tailscale_auth_key }}
+      --hostname={{ tailscale_hostname }}
+      --accept-dns={{ tailscale_accept_dns }}
+      --advertise-exit-node={{ tailscale_advertise_exit_node }}
+      --advertise-tags='{{ tailscale_advertise_tags }}'
+      --exit-node='{{ tailscale_exit_node }}'
+  become: true
   changed_when: true

@@ -1,6 +1,5 @@
 ---
 - name: Ensure Tailscale repo is enabled.
-  become: true
   block:
     - name: Install GPG key into /usr/share/keyrings
       ansible.builtin.get_url:
