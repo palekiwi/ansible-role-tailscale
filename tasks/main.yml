@@ -29,7 +29,7 @@
     cmd: "tailscale status --peers=false"
   register: tailscale_status
   failed_when: false
-  changed_when: "'Logged out' in tailscale_status.stderr"
+  changed_when: "'Logged out' in tailscale_status.stdout"
   notify: Log into tailscale
 
 - name: Run exit node.
